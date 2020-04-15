@@ -7,8 +7,8 @@ import config from '../config'
 import './Note.css'
 
 export default class Note extends React.Component {
-  static defaultProps ={
-    onDeleteNote: () => {},
+  static defaultProps = {
+    onDeleteNote: () => { },
   }
   static contextType = ApiContext;
 
@@ -23,6 +23,7 @@ export default class Note extends React.Component {
       },
     })
       .then(res => {
+        console.log(res);
         if (!res.ok)
           return res.json().then(e => Promise.reject(e))
         return res.json()

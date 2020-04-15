@@ -33,7 +33,7 @@ export default class AddFolder extends Component {
       <section className='add_folder'>
         <h2>Create New Folder</h2>
         <NotefulForm onSubmit={this.submitButton}>
-          <input type='text' placeholder='Folder Name' name='folder-name' />
+          <input type='text' placeholder='Folder Name' name='folder-name' required />
           <input type='submit' name='Add Folder' />
         </NotefulForm>
       </section>

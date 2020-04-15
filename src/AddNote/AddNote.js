@@ -2,13 +2,18 @@ import React, { Component } from "react";
 import ApiContext from "../ApiContext";
 import config from "../config";
 import NotefulForm from "../NotefulForm/NotefulForm";
+import { distanceInWordsToNow } from "date-fns";
 
 export default class AddNote extends Component {
   static contextType = ApiContext;
   submitButton = e => {
     e.preventDefault();
+    let index = e.target["folder_options"].options.selectedIndex;
     let note = {
-      name: e.target["note-name"].value
+      name: e.target["note-name"].value,
+      content: e.target["text_area"].value,
+      modified: Date.now(),
+      folderId: e.target["folder_options"].options[index].id
     };
     fetch(`${config.API_ENDPOINT}/notes`, {
       method: "POST",
@@ -27,25 +32,29 @@ export default class AddNote extends Component {
       });
   };
   render() {
-    const { folders = [] } = this.context;
+    const folders = this.context.folders;
     return (
       <section className='add_note'>
         <h2>Add Note</h2>
         <NotefulForm onSubmit={this.submitButton}>
-          <input name='note-name' placeholder='Name your note'></input>
+          <input name='note-name' placeholder='Name your note' required></input>
           <textarea
             className='text_area'
+            name='text_area'
             placeholder='Add text here..'
+            required
           ></textarea>
-          <select>
-            <option value={null}></option>
+          <select name="folder_options">
+
             {folders.map(folderListing => (
-              <option value={folderListing.id}></option>
+              <option name="folder_key"
+                id={folderListing.id}
+                key={folderListing.id}>{folderListing.name}</option>
             ))}
           </select>
           <input type='submit' name='add-note'></input>
         </NotefulForm>
-      </section>
+      </section >
     );
   }
 }
